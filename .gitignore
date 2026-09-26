@@ -1,0 +1,79 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.flutter-plugins-dependencies
+
+# Generated files
+*.g.dart
+*.freezed.dart
+
+# Dart coverage
+coverage/
+
+# Android
+android/.gradle/
+android/local.properties
+android/**/generated/
+android/key.properties
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/.last_build_id
+ios/Flutter/flutter_export_environment.sh
+ios/Runner/GeneratedPluginRegistrant.*
+
+# macOS
+macos/Pods/
+macos/Flutter/ephemeral/
+
+# Windows
+windows/flutter/ephemeral/
+
+# Linux
+linux/flutter/ephemeral/
+
+# Web
+web/.dart_tool/
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Firebase (if added later)
+firebase-debug.log
+firebase-debug.*.log
+
+# Keystore / signing files
+*.jks
+*.keystore
+
+# Build artifacts
+*.apk
+*.aab
