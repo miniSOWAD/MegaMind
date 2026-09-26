@@ -210,6 +210,26 @@ class ResultsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 36),
 
+                    // MegaMind Learning Insight feature
+                    Container(
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryLight,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.auto_graph_rounded, color: AppTheme.primary),
+                          const SizedBox(width: 12),
+                          Expanded(child: Text(
+                            accuracy >= 70 ? 'Great performance! Keep challenging harder quizzes to grow your knowledge.' : 'Practice more categories to improve your accuracy and build stronger knowledge.',
+                            style: const TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600),
+                          )),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
                     // Play Again CTA button
                     SizedBox(
                       height: 56,

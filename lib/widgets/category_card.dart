@@ -26,7 +26,7 @@ class CategoryCard extends StatelessWidget {
         highlightColor: AppTheme.primary.withOpacity(0.05),
         child: Ink(
           decoration: BoxDecoration(
-            color: Colors.white,
+            gradient: LinearGradient(colors: [Colors.white, AppTheme.primaryLight.withOpacity(0.35)], begin: Alignment.topLeft, end: Alignment.bottomRight),
             borderRadius: BorderRadius.circular(18),
             boxShadow: [
               BoxShadow(

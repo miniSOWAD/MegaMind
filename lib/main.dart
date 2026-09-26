@@ -15,11 +15,11 @@ void main() {
     DeviceOrientation.landscapeRight,
   ]);
 
-  runApp(const QuizzicalApp());
+  runApp(const MegaMindApp());
 }
 
-class QuizzicalApp extends StatelessWidget {
-  const QuizzicalApp({super.key});
+class MegaMindApp extends StatelessWidget {
+  const MegaMindApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class QuizzicalApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Quizzical',
+        title: 'MegaMind',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         home: const WelcomeScreen(),
