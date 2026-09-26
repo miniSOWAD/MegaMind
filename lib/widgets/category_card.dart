@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/category.dart';
 import '../utils/app_theme.dart';
-import '../utils/category_icons.dart';
+import '../utils/category_art.dart';
 
 class CategoryCard extends StatelessWidget {
   final TriviaCategory category;
@@ -15,60 +15,88 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = CategoryStyles.getStyle(category.id, category.name);
+    final assetPath = CategoryArt.getAssetPath(category.id, category.name);
+    final displayName = CategoryArt.cleanCategoryName(category.name);
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
-        splashColor: AppTheme.primary.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(24),
+        splashColor: AppTheme.primary.withValues(alpha: 0.10),
         highlightColor: AppTheme.primary.withValues(alpha: 0.05),
         child: Ink(
           decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [Colors.white, AppTheme.primaryLight.withValues(alpha: 0.35)], begin: Alignment.topLeft, end: Alignment.bottomRight),
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(24),
+            gradient: const LinearGradient(
+              colors: [Color(0xFFFFFFFF), Color(0xFFF5F7FF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.85),
+              width: 1.4,
+            ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+                color: AppTheme.primary.withValues(alpha: 0.08),
+                blurRadius: 20,
+                offset: const Offset(0, 12),
+              ),
+              BoxShadow(
+                color: Colors.white.withValues(alpha: 0.65),
+                blurRadius: 8,
+                offset: const Offset(-2, -2),
               ),
             ],
-            border: Border.all(color: const Color(0xFFF1F5F9), width: 1.5),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 54,
-                  height: 54,
-                  decoration: BoxDecoration(
-                    color: style.backgroundColor,
-                    shape: BoxShape.circle,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              color: Colors.white.withValues(alpha: 0.58),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(18),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(18),
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFF7FAFF), Color(0xFFF1ECFF)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Image.asset(
+                            assetPath,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                  child: Icon(
-                    style.icon,
-                    color: style.iconColor,
-                    size: 28,
+                  const SizedBox(height: 12),
+                  Text(
+                    displayName,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.textPrimary,
+                      height: 1.25,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  category.name.replaceAll('Entertainment: ', '').replaceAll('Science: ', ''),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.textPrimary,
-                    height: 1.25,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

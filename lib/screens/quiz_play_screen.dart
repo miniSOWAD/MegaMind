@@ -158,7 +158,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
                                 ),
                                 const SizedBox(width: 8),
                                 _buildBadge(
-                                  question.type == 'boolean' ? 'TRUE / FALSE' : 'MULTIPLE CHOICE',
+                                  question.hasMultipleCorrectAnswers ? 'MULTIPLE SELECTION' : (question.type == 'boolean' ? 'TRUE / FALSE' : 'MULTIPLE CHOICE'),
                                   AppTheme.textSecondary,
                                 ),
                               ],
@@ -213,18 +213,60 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
                                 ),
                               ),
 
+                            if (question.hasMultipleCorrectAnswers && !question.isAnswered)
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 14),
+                                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.primaryLight.withValues(alpha: 0.45),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: AppTheme.primary.withValues(alpha: 0.18)),
+                                ),
+                                child: const Row(
+                                  children: [
+                                    Icon(Icons.info_outline_rounded, color: AppTheme.primary),
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text(
+                                        'This is a multiple selection question. Choose more than one answer, then tap Submit Answers.',
+                                        style: TextStyle(
+                                          color: AppTheme.textPrimary,
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.35,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
                             // Answer Buttons
                             ...question.shuffledAnswers.map((answer) {
                               return AnswerButton(
                                 text: answer,
                                 selectedAnswer: question.selectedAnswer,
-                                correctAnswer: question.correctAnswer,
+                                selectedAnswers: question.selectedAnswers,
+                                correctAnswers: question.correctAnswers,
                                 isAnswered: question.isAnswered,
-                                onTap: () => provider.submitAnswer(answer),
+                                allowMultipleSelection: question.hasMultipleCorrectAnswers,
+                                onTap: () => question.hasMultipleCorrectAnswers
+                                    ? provider.toggleSelection(answer)
+                                    : provider.submitAnswer(answer),
                               );
                             }),
 
                             const SizedBox(height: 20),
+
+                            if (question.hasMultipleCorrectAnswers && !question.isAnswered)
+                              SizedBox(
+                                height: 52,
+                                child: ElevatedButton(
+                                  onPressed: question.selectedAnswers.isEmpty ? null : () => provider.submitMultipleSelection(),
+                                  child: const Text('Submit Answers'),
+                                ),
+                              ),
+
+                            const SizedBox(height: 12),
 
                             // Next Button (enabled once answered)
                             if (question.isAnswered && !question.isTimedOut)

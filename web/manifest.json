@@ -1,6 +1,6 @@
 {
-    "name": "food_weather_app",
-    "short_name": "food_weather_app",
+    "name": "MegaMind",
+    "short_name": "MegaMind",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

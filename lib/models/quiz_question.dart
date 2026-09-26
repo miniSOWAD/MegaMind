@@ -6,11 +6,14 @@ class QuizQuestion {
   final String difficulty;
   final String question;
   final String correctAnswer;
+  List<String> correctAnswers;
   final List<String> incorrectAnswers;
   final List<String> shuffledAnswers;
 
   String? selectedAnswer;
+  List<String> selectedAnswers = [];
   bool isTimedOut;
+  bool isSubmitted;
 
   QuizQuestion({
     required this.category,
@@ -18,11 +21,13 @@ class QuizQuestion {
     required this.difficulty,
     required this.question,
     required this.correctAnswer,
+    List<String>? correctAnswers,
     required this.incorrectAnswers,
     required this.shuffledAnswers,
     this.selectedAnswer,
     this.isTimedOut = false,
-  });
+    this.isSubmitted = false,
+  }) : correctAnswers = correctAnswers ?? [correctAnswer];
 
   factory QuizQuestion.fromJson(Map<String, dynamic> json) {
     final rawCategory = json['category'] as String? ?? '';
@@ -34,7 +39,6 @@ class QuizQuestion {
         .map((e) => e.toString())
         .toList();
 
-    // Decode HTML entities
     final decodedCategory = HtmlUnescapeHelper.unescape(rawCategory);
     final decodedQuestion = HtmlUnescapeHelper.unescape(rawQuestion);
     final decodedCorrect = HtmlUnescapeHelper.unescape(rawCorrect);
@@ -42,13 +46,10 @@ class QuizQuestion {
         .map((ans) => HtmlUnescapeHelper.unescape(ans))
         .toList();
 
-    // Prepare shuffled answers
     final List<String> answers = [decodedCorrect, ...decodedIncorrect];
     if (rawType == 'boolean') {
-      // For boolean, keep standard ['True', 'False'] order for better UX
-      answers.sort((a, b) => b.compareTo(a)); // True first, then False
+      answers.sort((a, b) => b.compareTo(a));
     } else {
-      // Shuffle multiple choice answers
       answers.shuffle();
     }
 
@@ -59,11 +60,23 @@ class QuizQuestion {
       question: decodedQuestion,
       correctAnswer: decodedCorrect,
       incorrectAnswers: decodedIncorrect,
+      correctAnswers: [decodedCorrect],
       shuffledAnswers: answers,
     );
   }
 
-  bool get isAnswered => selectedAnswer != null || isTimedOut;
+  bool get isAnswered => isSubmitted || isTimedOut;
 
-  bool get isCorrect => selectedAnswer == correctAnswer;
+  bool get isCorrect {
+    if (selectedAnswers.isNotEmpty) {
+      final selectedSet = selectedAnswers.toSet();
+      final correctSet = correctAnswers.toSet();
+      return selectedSet.length == correctSet.length &&
+          selectedSet.containsAll(correctSet);
+    }
+
+    return selectedAnswer != null && correctAnswers.contains(selectedAnswer);
+  }
+
+  bool get hasMultipleCorrectAnswers => correctAnswers.length > 1;
 }

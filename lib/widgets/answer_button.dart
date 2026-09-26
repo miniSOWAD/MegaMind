@@ -4,16 +4,20 @@ import '../utils/app_theme.dart';
 class AnswerButton extends StatelessWidget {
   final String text;
   final String? selectedAnswer;
-  final String correctAnswer;
+  final List<String> selectedAnswers;
+  final List<String> correctAnswers;
   final bool isAnswered;
+  final bool allowMultipleSelection;
   final VoidCallback onTap;
 
   const AnswerButton({
     super.key,
     required this.text,
     required this.selectedAnswer,
-    required this.correctAnswer,
+    required this.selectedAnswers,
+    required this.correctAnswers,
     required this.isAnswered,
+    required this.allowMultipleSelection,
     required this.onTap,
   });
 
@@ -24,25 +28,51 @@ class AnswerButton extends StatelessWidget {
     Color textColor = AppTheme.textPrimary;
     Widget? trailingIcon;
 
-    final bool isThisSelected = selectedAnswer == text;
-    final bool isThisCorrect = text == correctAnswer;
+    final bool isThisSelected =
+        selectedAnswers.contains(text) || selectedAnswer == text;
+    final bool isThisCorrect = correctAnswers.contains(text);
 
     if (isAnswered) {
       if (isThisCorrect) {
         backgroundColor = AppTheme.correctLight;
         borderColor = AppTheme.correct;
         textColor = const Color(0xFF065F46);
-        trailingIcon = const Icon(Icons.check_circle, color: AppTheme.correct, size: 22);
+        trailingIcon = const Icon(
+          Icons.check_circle,
+          color: AppTheme.correct,
+          size: 22,
+        );
       } else if (isThisSelected) {
         backgroundColor = AppTheme.incorrectLight;
         borderColor = AppTheme.incorrect;
         textColor = const Color(0xFF991B1B);
-        trailingIcon = const Icon(Icons.cancel, color: AppTheme.incorrect, size: 22);
+        trailingIcon = const Icon(
+          Icons.cancel,
+          color: AppTheme.incorrect,
+          size: 22,
+        );
       } else {
         backgroundColor = const Color(0xFFF8FAFC);
         borderColor = const Color(0xFFE2E8F0);
         textColor = AppTheme.textMuted;
       }
+    } else if (isThisSelected) {
+      backgroundColor = AppTheme.primaryLight.withValues(alpha: 0.55);
+      borderColor = AppTheme.primary;
+      textColor = AppTheme.primary;
+      trailingIcon = Icon(
+        allowMultipleSelection
+            ? Icons.check_box_rounded
+            : Icons.radio_button_checked_rounded,
+        color: AppTheme.primary,
+        size: 22,
+      );
+    } else if (allowMultipleSelection) {
+      trailingIcon = const Icon(
+        Icons.check_box_outline_blank_rounded,
+        color: AppTheme.textMuted,
+        size: 22,
+      );
     }
 
     return Padding(

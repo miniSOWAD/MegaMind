@@ -84,12 +84,12 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                     return RefreshIndicator(
                       onRefresh: () => provider.fetchCategories(forceRefresh: true),
                       child: GridView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
                           crossAxisSpacing: 14,
                           mainAxisSpacing: 14,
-                          childAspectRatio: 1.05,
+                          childAspectRatio: 0.84,
                         ),
                         itemCount: categories.length,
                         itemBuilder: (context, index) {

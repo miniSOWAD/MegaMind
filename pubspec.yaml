@@ -1,4 +1,4 @@
-name: quizzical
+name: megamind
 description: "A clean, responsive, and accessible trivia quiz application integrating OpenTDB for Mobile App Development Lab Final Exam."
 publish_to: 'none'
 
@@ -22,3 +22,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/category_images/

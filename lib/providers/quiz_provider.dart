@@ -19,16 +19,13 @@ class QuizProvider extends ChangeNotifier {
   String? _errorMessage;
   bool _isQuizCompleted = false;
 
-  // Timer state
   int _questionDurationSeconds = 20;
   int _remainingSeconds = 20;
   Timer? _timer;
 
-  // Overall session metrics
   final Stopwatch _sessionStopwatch = Stopwatch();
   int _totalElapsedSeconds = 0;
 
-  // Getters
   QuizConfig? get currentConfig => _currentConfig;
   List<QuizQuestion> get questions => _questions;
   int get currentIndex => _currentIndex;
@@ -52,7 +49,6 @@ class QuizProvider extends ChangeNotifier {
   double get accuracyPercentage =>
       totalQuestions > 0 ? ((_score / totalQuestions) * 100) : 0.0;
 
-  /// Starts a new quiz session with the given configuration
   Future<void> startQuiz(QuizConfig config) async {
     _currentConfig = config;
     _questionDurationSeconds = config.timerDurationSeconds;
@@ -66,17 +62,20 @@ class QuizProvider extends ChangeNotifier {
     _sessionStopwatch.reset();
     notifyListeners();
 
-    // Persist configuration to SharedPreferences
     await PreferencesService.saveConfig(
       amount: config.amount,
       difficulty: config.difficulty,
       type: config.type,
+      timerDurationSeconds: config.timerDurationSeconds,
       categoryId: config.category.id,
     );
 
     try {
       final fetchedQuestions = await _apiService.fetchQuestions(config);
       _questions = fetchedQuestions;
+      if (config.type == 'multiple_selection') {
+        _convertToMultipleSelection();
+      }
       _isLoading = false;
       _sessionStopwatch.start();
       _startQuestionTimer();
@@ -88,14 +87,12 @@ class QuizProvider extends ChangeNotifier {
     }
   }
 
-  /// Retries fetching with the currently preserved config
   Future<void> retryFetch() async {
     if (_currentConfig != null) {
       await startQuiz(_currentConfig!);
     }
   }
 
-  /// Internal timer setup
   void _startQuestionTimer() {
     _cancelTimer();
     _remainingSeconds = _questionDurationSeconds;
@@ -116,14 +113,12 @@ class QuizProvider extends ChangeNotifier {
     _timer = null;
   }
 
-  /// Handles timeout when the user doesn't answer in time
   void _onTimeOut() {
     final question = currentQuestion;
     if (question != null && !question.isAnswered) {
       question.isTimedOut = true;
       notifyListeners();
 
-      // Auto-advance after showing timeout feedback for 1.5 seconds
       Timer(const Duration(milliseconds: 1500), () {
         if (!_isQuizCompleted && question.isTimedOut && currentQuestion == question) {
           nextQuestion();
@@ -132,13 +127,25 @@ class QuizProvider extends ChangeNotifier {
     }
   }
 
-  /// Submits the chosen answer
+  void _convertToMultipleSelection() {
+    for (final q in _questions) {
+      if (q.shuffledAnswers.length > 2) {
+        final extra = q.incorrectAnswers.isNotEmpty ? q.incorrectAnswers.first : null;
+        if (extra != null) {
+          q.correctAnswers = [q.correctAnswer, extra];
+        }
+      }
+    }
+  }
+
   void submitAnswer(String selectedAnswer) {
     final question = currentQuestion;
     if (question == null || question.isAnswered) return;
 
     _cancelTimer();
     question.selectedAnswer = selectedAnswer;
+    question.selectedAnswers = [selectedAnswer];
+    question.isSubmitted = true;
 
     if (question.isCorrect) {
       _score++;
@@ -147,7 +154,36 @@ class QuizProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Advances to the next question or completes the quiz
+  void toggleSelection(String answer) {
+    final question = currentQuestion;
+    if (question == null || question.isAnswered) return;
+
+    if (question.selectedAnswers.contains(answer)) {
+      question.selectedAnswers.remove(answer);
+    } else {
+      question.selectedAnswers.add(answer);
+    }
+
+    notifyListeners();
+  }
+
+  void submitMultipleSelection() {
+    final question = currentQuestion;
+    if (question == null || question.isAnswered || question.selectedAnswers.isEmpty) {
+      return;
+    }
+
+    _cancelTimer();
+    question.selectedAnswer = null;
+    question.isSubmitted = true;
+
+    if (question.isCorrect) {
+      _score++;
+    }
+
+    notifyListeners();
+  }
+
   void nextQuestion() {
     _cancelTimer();
 
@@ -160,7 +196,6 @@ class QuizProvider extends ChangeNotifier {
     }
   }
 
-  /// Ends the quiz and records final session statistics
   void _completeQuiz() {
     _cancelTimer();
     _sessionStopwatch.stop();
@@ -169,7 +204,6 @@ class QuizProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Resets the quiz session completely
   void resetQuiz() {
     _cancelTimer();
     _sessionStopwatch.reset();

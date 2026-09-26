@@ -4,7 +4,7 @@ class QuizConfig {
   final TriviaCategory category;
   final int amount;
   final String difficulty; // 'any', 'easy', 'medium', 'hard'
-  final String type; // 'any', 'multiple', 'boolean'
+  final String type; // 'any', 'multiple', 'boolean', 'multiple_selection'
   final int timerDurationSeconds; // Default 20 or 30s
 
   const QuizConfig({
@@ -39,10 +39,10 @@ class QuizConfig {
     };
 
     if (difficulty != 'any') {
-      params['difficulty'] = difficulty.toLowerCase();
+      params['difficulty'] = difficulty.toLowerCase() == 'legend' ? 'hard' : difficulty.toLowerCase();
     }
 
-    if (type != 'any') {
+    if (type != 'any' && type != 'multiple_selection') {
       params['type'] = type.toLowerCase();
     }
 
