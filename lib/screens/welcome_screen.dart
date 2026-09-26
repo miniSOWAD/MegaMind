@@ -24,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: const LinearGradient(colors: [AppTheme.primary, AppTheme.accent]),
-                    boxShadow: [BoxShadow(color: AppTheme.primary.withOpacity(.25), blurRadius: 30, offset: const Offset(0, 15))],
+                    boxShadow: [BoxShadow(color: AppTheme.primary.withValues(alpha: .25), blurRadius: 30, offset: const Offset(0, 15))],
                   ),
                   child: const Icon(Icons.psychology_alt_rounded, color: Colors.white, size: 70),
                 ),

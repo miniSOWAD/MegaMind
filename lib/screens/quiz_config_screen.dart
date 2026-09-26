@@ -113,7 +113,7 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                     decoration: BoxDecoration(
                       color: style.backgroundColor,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: style.iconColor.withOpacity(0.2)),
+                      border: Border.all(color: style.iconColor.withValues(alpha: 0.2)),
                     ),
                     child: Row(
                       children: [

@@ -20,7 +20,7 @@ class RetryBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppTheme.incorrectLight,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppTheme.incorrect.withOpacity(0.3)),
+        border: Border.all(color: AppTheme.incorrect.withValues(alpha: 0.3)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

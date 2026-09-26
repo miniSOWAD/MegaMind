@@ -36,11 +36,11 @@ class AppTheme {
         centerTitle: true,
         titleTextStyle: TextStyle(fontSize: 21, fontWeight: FontWeight.w800, color: textPrimary),
       ),
-      cardTheme: CardThemeData(
+      cardTheme: const CardThemeData(
         color: cardColor,
         elevation: 3,
-        shadowColor: Color(0x2206B6D4),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(22))),
+        shadowColor: const Color(0x2206B6D4),
+        shape: const RoundedRectangleBorder(borderRadius: const BorderRadius.all(Radius.circular(22))),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

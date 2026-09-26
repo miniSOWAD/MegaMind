@@ -22,15 +22,15 @@ class CategoryCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(18),
-        splashColor: AppTheme.primary.withOpacity(0.1),
-        highlightColor: AppTheme.primary.withOpacity(0.05),
+        splashColor: AppTheme.primary.withValues(alpha: 0.1),
+        highlightColor: AppTheme.primary.withValues(alpha: 0.05),
         child: Ink(
           decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [Colors.white, AppTheme.primaryLight.withOpacity(0.35)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+            gradient: LinearGradient(colors: [Colors.white, AppTheme.primaryLight.withValues(alpha: 0.35)], begin: Alignment.topLeft, end: Alignment.bottomRight),
             borderRadius: BorderRadius.circular(18),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.04),
+                color: Colors.black.withValues(alpha: 0.04),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),

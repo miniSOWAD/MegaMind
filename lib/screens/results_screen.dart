@@ -77,7 +77,7 @@ class ResultsScreen extends StatelessWidget {
                         width: 90,
                         height: 90,
                         decoration: BoxDecoration(
-                          color: performanceColor.withOpacity(0.12),
+                          color: performanceColor.withValues(alpha: 0.12),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
@@ -123,7 +123,7 @@ class ResultsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: AppTheme.primary.withOpacity(0.3),
+                            color: AppTheme.primary.withValues(alpha: 0.3),
                             blurRadius: 16,
                             offset: const Offset(0, 8),
                           ),
@@ -328,7 +328,7 @@ class ResultsScreen extends StatelessWidget {
         border: Border.all(color: const Color(0xFFE2E8F0)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
