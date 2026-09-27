@@ -73,10 +73,11 @@ class CategoryCard extends StatelessWidget {
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(2),
                           child: Image.asset(
                             assetPath,
-                            fit: BoxFit.contain,
+                            fit: BoxFit.fill,
+                            alignment: Alignment.center,
                           ),
                         ),
                       ),

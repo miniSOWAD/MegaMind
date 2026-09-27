@@ -341,12 +341,28 @@ class _QuizConfigScreenState extends State<QuizConfigScreen> {
                             ),
                             const SizedBox(height: 14),
                             DropdownButtonFormField<String>(
+                              isExpanded: true,
                               initialValue: _type,
                               decoration: const InputDecoration(),
+                              selectedItemBuilder: (context) {
+                                return _typeOptions.map((item) {
+                                  return Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      item['label']!,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  );
+                                }).toList();
+                              },
                               items: _typeOptions.map((item) {
                                 return DropdownMenuItem<String>(
                                   value: item['value'],
-                                  child: Text(item['label']!),
+                                  child: Text(
+                                    item['label']!,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 );
                               }).toList(),
                               onChanged: (val) {
